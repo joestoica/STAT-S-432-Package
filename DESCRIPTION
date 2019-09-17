@@ -1,0 +1,14 @@
+Package: s432
+Title: 
+Version: 0.1.0
+Authors@R: c(
+    person("Joe", "Stoica", email = "joe.stoica@gmail.com", role = c("cre", "aut")),
+    person("Daniel", "McDonald", email = "dajmcdon@iu.edu", role = "aut"))
+Maintainer: The package maintainer <joe.stoica@gmail.com>
+Description: This is a package for STAT-S 432, led by Dr. Daniel McDonald. This course is the second portion of the applied linear model sequence for undergraduates at Indiana University. 
+    The contents of this pacakge contain functions that will be used throughout the course, which are all related to linear modeling and classification algorithms.
+Depends: R (>= 3.6.0)
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
