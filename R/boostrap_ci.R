@@ -5,7 +5,7 @@
 #' @param tboots
 #' @param B
 #' @param t.hat
-#' @param level
+#' @param level The specified confidence level
 #'
 #' @return A confidence interval that was generated
 
@@ -14,7 +14,7 @@
 #'
 #'
 
-
+# TODO add @param and example
 bootstrap_ci <- function(statistic = NULL, simulator = NULL, tboots = NULL,
                          B = if (!is.null(tboots)) {ncol(tboots)}, t.hat, level) {
     resample <- function(x) {
@@ -26,7 +26,8 @@ bootstrap_ci <- function(statistic = NULL, simulator = NULL, tboots = NULL,
         return(data[sample.rows, ]) }
 
     rboot <- function(statistic, simulator, B) {
-        tboots <- replicate(B, statistic(simulator())) if (is.null(dim(tboots))) {
+        tboots <- replicate(B, statistic(simulator()))
+        if (is.null(dim(tboots))) {
             tboots <- array(tboots, dim = c(1, B)) }
         return(tboots)
     }
@@ -43,7 +44,9 @@ bootstrap_ci <- function(statistic = NULL, simulator = NULL, tboots = NULL,
     }
 
     if (is.null(tboots)) {
-        stopifnot(!is.null(statistic)) stopifnot(!is.null(simulator)) stopifnot(!is.null(B))
+        stopifnot(!is.null(statistic))
+        stopifnot(!is.null(simulator))
+        stopifnot(!is.null(B))
         tboots <- rboot(statistic, simulator, B)
     }
 
@@ -56,26 +59,5 @@ bootstrap_ci <- function(statistic = NULL, simulator = NULL, tboots = NULL,
 }
 
 
-## Simulator
-resamp.resids.cats <- function(){
 
-    resids = residuals(cats.lm)
-    newResids = sample(resids, replace=TRUE)
 
-    # resample the residuals from the original model
-    newCats = data.frame(Bwt = fatcats$Bwt,
-                         Hwt = fitted(cats.lm) + newResids) # create a new dataframe
-    return(newCats)
-}
-
-# with the original x's but new y's
-## Estimator
-
-cats.lm = lm(Hwt ~ 0+Bwt,data=fatcats)
-summary(cats.lm)
-
-fitCats <- function(newCats) coef(lm(Hwt~0+Bwt, data=newCats)) # get the coef from OLS fitCats(fatcats) # test the above on original data, should give same coef
-
-cisPara = bootstrap.ci(statistic = fitCats,
-                       simulator = resamp.resids.cats,
-                       B = 1000, t.hat = fitCats(fatcats), level = 0.95)
