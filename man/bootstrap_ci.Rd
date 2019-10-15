@@ -18,5 +18,4 @@ Bootstrap confidence interval
 }
 \examples{
 
-
 }
